@@ -81,6 +81,7 @@ class TrigramModel(object):
         # generator = corpus_reader(corpusfile) # works
         # for sentence in generator: # works
         #     print(self.sentence_logprob(sentence)) # works
+        ############################
 
     def count_ngrams(self, corpus):
         """
@@ -181,7 +182,11 @@ class TrigramModel(object):
         COMPLETE THIS METHOD (PART 6) 
         Returns the log probability of an entire sequence.
         """
-        return float("inf")
+        log_sum = 0.0
+        for sentence in corpus:
+            log_sum += self.sentence_logprob(sentence)
+        exponent = -1*float(log_sum/self.total_words)
+        return 2**exponent
 
 
 def essay_scoring_experiment(training_file1, training_file2, testdir1, testdir2):
@@ -247,9 +252,9 @@ if __name__ == "__main__":
     # Python prompt.
 
     # Testing perplexity:
-    # dev_corpus = corpus_reader(sys.argv[2], model.lexicon)
-    # pp = model.perplexity(dev_corpus)
-    # print(pp)
+    dev_corpus = corpus_reader(sys.argv[2], model.lexicon)
+    pp = model.perplexity(dev_corpus)
+    print(pp)
 
     # Essay scoring experiment:
     # acc = essay_scoring_experiment('train_high.txt', 'train_low.txt", "test_high", "test_low")

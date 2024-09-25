@@ -4,6 +4,7 @@ import math
 import random
 import os
 import os.path
+import itertools
 """
 COMS W4705 - Natural Language Processing - Fall 2024 
 Programming Homework 1 - Trigram Language Models
@@ -122,7 +123,7 @@ class TrigramModel(object):
         denominator = self.bigramcounts.get(
             tuple(trigram[:2]), 0)
         if denominator == 0:
-            return self.raw_unigram_probability(self.unigramcounts.get((trigram[2],)))
+            return self.raw_unigram_probability((trigram[2],))
         return float(numerator/denominator)
 
     def raw_bigram_probability(self, bigram):
@@ -131,7 +132,9 @@ class TrigramModel(object):
         Returns the raw (unsmoothed) bigram probability
         """
         numerator = self.bigramcounts.get(bigram, 0)
-        denominator = self.unigramcounts.get((bigram[0],), self.total_words)
+        denominator = self.unigramcounts.get((bigram[0],), 0)
+        if denominator == 0:
+            return self.raw_unigram_probability((bigram[0],))
         return float(numerator/denominator)
 
     def raw_unigram_probability(self, unigram):
@@ -144,7 +147,9 @@ class TrigramModel(object):
             # hint: recomputing the denominator every time the method is called
             # can be slow! You might want to compute the total number of words once,
             # store in the TrigramModel instance, and then re-use it.
-        return float(self.unigramcounts.get(unigram, 0)/self.total_words)
+        numerator = float(self.unigramcounts.get(unigram, 1))
+        denominator = self.total_words
+        return float(numerator/denominator)
 
     def generate_sentence(self, t=20):
         """
@@ -163,7 +168,7 @@ class TrigramModel(object):
         lambda2 = 1/3.0
         lambda3 = 1/3.0
 
-        return float(lambda1*self.raw_trigram_probability(trigram) + lambda2*self.raw_bigram_probability(trigram[1:]) + lambda3*self.raw_unigram_probability(trigram[2:]))
+        return float(lambda1*self.raw_trigram_probability(trigram) + lambda2*self.raw_bigram_probability(trigram[1:]) + lambda3*self.raw_unigram_probability((trigram[2],)))
 
     def sentence_logprob(self, sentence):
         """
@@ -183,9 +188,11 @@ class TrigramModel(object):
         Returns the log probability of an entire sequence.
         """
         log_sum = 0.0
+        num_tokens = 0
         for sentence in corpus:
+            num_tokens += len(sentence)
             log_sum += self.sentence_logprob(sentence)
-        exponent = -1*float(log_sum/self.total_words)
+        exponent = -1*float(log_sum/num_tokens)
         return 2**exponent
 
 

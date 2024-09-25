@@ -4,7 +4,6 @@ import math
 import random
 import os
 import os.path
-import itertools
 """
 COMS W4705 - Natural Language Processing - Fall 2024 
 Programming Homework 1 - Trigram Language Models
@@ -79,9 +78,9 @@ class TrigramModel(object):
         self.total_words = sum(len(sentence) for sentence in generator)
 
         # Part 5 Testing
-        # generator = corpus_reader(corpusfile) # works
-        # for sentence in generator: # works
-        #     print(self.sentence_logprob(sentence)) # works
+        # generator = corpus_reader(corpusfile)  # works
+        # for sentence in generator:  # works
+        #     print(self.sentence_logprob(sentence))  # works
         ############################
 
     def count_ngrams(self, corpus):
@@ -233,7 +232,7 @@ if __name__ == "__main__":
 
     # print(get_ngrams(["natural", "language", "processing"], 1))  # works
     # print(get_ngrams(["natural", "language", "processing"], 2))  # works
-    # print(get_ngrams(["natural", "language", "processing"], 3)) # works
+    # print(get_ngrams(["natural", "language", "processing"], 3))  # works
     ############################
 
     # Part 2 Testing
@@ -244,12 +243,12 @@ if __name__ == "__main__":
     ############################
 
     # Part 3 Testing
-    # for unigram in model.unigramcounts: # works
-    #     print(model.raw_unigram_probability(unigram)) # works
-    # for bigram in model.bigramcounts: # works
-    #     print(model.raw_bigram_probability(bigram)) # works
-    # for trigram in model.trigramcounts: # works
-    #     print(model.raw_trigram_probability(trigram)) # works
+    # for unigram in model.unigramcounts:  # works
+    #     print(model.raw_unigram_probability(unigram))  # works
+    # for bigram in model.bigramcounts:  # works
+    #     print(model.raw_bigram_probability(bigram))  # works
+    # for trigram in model.trigramcounts:  # works
+    #     print(model.raw_trigram_probability(trigram))  # works
     ############################
 
     # Part 4 Testing
@@ -267,11 +266,11 @@ if __name__ == "__main__":
     # Python prompt.
 
     # Testing perplexity:
-    # dev_corpus = corpus_reader(sys.argv[2], model.lexicon)
+    # dev_corpus = corpus_reader(sys.argv[1], model.lexicon)
     # pp = model.perplexity(dev_corpus)
     # print(pp)
 
     # Essay scoring experiment:
-    acc = essay_scoring_experiment(
-        'train_high.txt', "train_low.txt", "test_high", "test_low")
-    print(acc)
+    # acc = essay_scoring_experiment(
+    #     'train_high.txt', "train_low.txt", "test_high", "test_low")
+    # print(acc)
